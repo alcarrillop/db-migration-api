@@ -1,5 +1,6 @@
 from flask import request, jsonify
-from flask_restful import Resource, Api, reqparse, inputs
+from flask_restful import Resource, Api, reqparse
+from sqlalchemy import text
 from werkzeug.datastructures import FileStorage
 from api import app, db
 from api.models import Department, Job, Employee
@@ -9,6 +10,81 @@ api = Api(app)
 
 parser = reqparse.RequestParser()
 parser.add_argument('file', type=FileStorage, location='files')
+
+@app.route('/hires-by-quarter', methods=['GET'])
+def hires_by_quarter():
+    try:
+        sql = text("""
+            SELECT 
+                department,
+                job,
+                SUM(CASE WHEN strftime('%m', datename) IN ('01', '02', '03') THEN 1 ELSE 0 END) AS Q1,
+                SUM(CASE WHEN strftime('%m', datename) IN ('04', '05', '06') THEN 1 ELSE 0 END) AS Q2,
+                SUM(CASE WHEN strftime('%m', datename) IN ('07', '08', '09') THEN 1 ELSE 0 END) AS Q3,
+                SUM(CASE WHEN strftime('%m', datename) IN ('10', '11', '12') THEN 1 ELSE 0 END) AS Q4
+            FROM 
+                employee 
+            JOIN 
+                department ON department.id = employee.department_id
+            JOIN 
+                job ON job.id = employee.job_id
+            WHERE 
+                strftime('%Y', datename) = '2021'
+            GROUP BY 
+                department, job
+            ORDER BY 
+                department, job;
+        """)
+
+        result = db.session.execute(sql)
+        hires = [{"department": row[0], "job": row[1], "Q1": row[2], "Q2": row[3], "Q3": row[4], "Q4": row[5]} for row in result]
+
+        return jsonify(hires)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/departments-above-average', methods=['GET'])
+def departments_above_average():
+    try:
+        sql = text("""
+            WITH DepartmentHires AS (
+                SELECT 
+                    department.id AS department_id,
+                    department.department AS department_name,
+                    COUNT(employee.id) AS hires
+                FROM 
+                    department
+                LEFT JOIN 
+                    employee ON department.id = employee.department_id
+                WHERE 
+                    strftime('%Y', employee.datename) = '2021'
+                GROUP BY 
+                    department.id
+            ),
+            MeanHires AS (
+                SELECT 
+                    AVG(hires) AS average_hires
+                FROM 
+                    DepartmentHires
+            )
+            SELECT 
+                department_id,
+                department_name,
+                hires
+            FROM 
+                DepartmentHires
+            WHERE 
+                hires > (SELECT average_hires FROM MeanHires)
+            ORDER BY 
+                hires DESC;
+        """)
+
+        result = db.session.execute(sql)
+        departments = [{"id": row[0], "department": row[1], "hired": row[2]} for row in result]
+
+        return jsonify(departments)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 class UploadCSV(Resource):
     def post(self):
