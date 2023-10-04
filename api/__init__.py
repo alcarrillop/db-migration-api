@@ -6,3 +6,5 @@ app.config.from_object('config.Config')  # Assuming you have a Config class in c
 db = SQLAlchemy(app)
 
 from api import routes, models
+
+
