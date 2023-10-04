@@ -2,9 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config.from_object('config.Config')
-
+app.config.from_object('config.Config')  # Assuming you have a Config class in config.py
 db = SQLAlchemy(app)
 
-# Import routes after app is created to avoid circular imports
-from api import routes
+from api import routes, models
