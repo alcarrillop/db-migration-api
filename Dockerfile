@@ -13,11 +13,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Set the Flask app environment variable
 ENV FLASK_APP run.py
 
-# Make port 5000 available to the world outside this container
-EXPOSE 5000
+# Make port 80 available to the world outside this container
+EXPOSE 80
 
 # Define environment variable for Flask to run in production mode
 ENV FLASK_ENV production
 
 # Run app.py when the container launches
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["flask", "run", "--host=0.0.0.0", "--port=80"]
