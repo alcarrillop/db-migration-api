@@ -11,6 +11,21 @@ api = Api(app)
 parser = reqparse.RequestParser()
 parser.add_argument('file', type=FileStorage, location='files')
 
+@app.route('/upload-csv/table-department', methods=['GET'])
+def get_departments():
+    departments = Department.query.all()  # Fetch all departments
+    return jsonify([dept.serialize() for dept in departments])
+
+@app.route('/upload-csv/table-job', methods=['GET'])
+def get_jobs():
+    jobs = Job.query.all()  # Fetch all jobs
+    return jsonify([job.serialize() for job in jobs])
+
+@app.route('/upload-csv/table-employee', methods=['GET'])
+def get_employees():
+    employees = Employee.query.all()  # Fetch all employees
+    return jsonify([emp.serialize() for emp in employees])
+
 @app.route('/hires-by-quarter', methods=['GET'])
 def hires_by_quarter():
     try:
