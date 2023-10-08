@@ -26,6 +26,24 @@ def get_employees():
     employees = Employee.query.all()  # Fetch all employees
     return jsonify([emp.serialize() for emp in employees])
 
+@app.route('/upload-csv/table-department', methods=['DELETE'])
+def delete_departments():
+    Department.query.delete()  # Delete all departments
+    db.session.commit()  # Commit the changes
+    return jsonify({"message": "All departments deleted successfully"})
+
+@app.route('/upload-csv/table-job', methods=['DELETE'])
+def delete_jobs():
+    Job.query.delete()  # Delete all jobs
+    db.session.commit()  # Commit the changes
+    return jsonify({"message": "All jobs deleted successfully"})
+
+@app.route('/upload-csv/table-employee', methods=['DELETE'])
+def delete_employees():
+    Employee.query.delete()  # Delete all employees
+    db.session.commit()  # Commit the changes
+    return jsonify({"message": "All employees deleted successfully"})
+
 @app.route('/hires-by-quarter', methods=['GET'])
 def hires_by_quarter():
     try:
