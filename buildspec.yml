@@ -9,11 +9,11 @@ phases:
     commands:
       - echo "Building the Docker image..."
       - docker build -t db-migration-api .
-      - docker tag db-migration-api:latest $REPOSITORY_URI:latest
+      - docker tag db-migration-api:latest 311380684673.dkr.ecr.us-east-2.amazonaws.com/db-migration-api-cicd:latest
   post_build:
     commands:
       - echo "Pushing Docker image to Amazon ECR..."
       - docker push $REPOSITORY_URI:latest
-      - echo '[{"name":"db-migration-api","imageUri":"'$REPOSITORY_URI:latest'"}]' > imagedefinitions.json
+      - echo '[{"name":"db-migration-api","imageUri":"'311380684673.dkr.ecr.us-east-2.amazonaws.com/db-migration-api-cicd:latest'"}]' > imagedefinitions.json
 artifacts:
     files: imagedefinitions.json

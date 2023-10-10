@@ -1,7 +1,7 @@
 {
     "AWSEBDockerrunVersion": "1",
     "Image": {
-      "Name": "<YOUR_ECR_REPOSITORY_URI>:latest",
+      "Name": "311380684673.dkr.ecr.us-east-2.amazonaws.com/db-migration-api-cicd:latest",
       "Update": "true"
     },
     "Ports": [
