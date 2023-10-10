@@ -14,6 +14,7 @@ phases:
     commands:
       - echo "Pushing Docker image to Amazon ECR..."
       - docker push 311380684673.dkr.ecr.us-east-2.amazonaws.com/db-migration-api-cicd:latest
-      - echo '[{"name":"db-migration-api","imageUri":"'311380684673.dkr.ecr.us-east-2.amazonaws.com/db-migration-api-cicd:latest'"}]' > imagedefinitions.json
+      - echo '[{"name":"db-migration-api","imageUri":"311380684673.dkr.ecr.us-east-2.amazonaws.com/db-migration-api-cicd:latest"}]' > imagedefinitions.json
+
 artifacts:
     files: imagedefinitions.json
