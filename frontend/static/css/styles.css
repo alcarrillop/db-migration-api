@@ -1,0 +1,156 @@
+
+body {
+    background-image: url('../images/background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(247, 247, 247, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+/* body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+} */
+
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    max-width: 1200px; /* Ajusta según prefieras */
+    margin: 0 auto;
+}
+
+
+.left-column, .right-column {
+    width: 45%; /* Ajusta según prefieras */
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center; /* Alinea verticalmente los elementos en el centro */
+    gap: 10px; /* Espacio entre los elementos */
+}
+    
+
+.header {
+    padding: 20px;
+    background-color: #fafafa;
+    border-bottom: 1px solid #e0e0e0;
+    max-width: 1200px; /* Ajusta según prefieras */
+    margin: 20px auto 0 auto; /* Centra el encabezado horizontalmente y mantiene el margen inferior */
+}
+
+
+.header h1 {
+    margin: 0;
+    color: #333;
+}
+
+.header p {
+    margin-top: 10px;
+    color: #181717;
+}
+
+button {
+    padding: 5px 10px;
+    margin-left: 10px;
+    background-color: #dce4da; /* Color rojo */
+    color: #090707;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #d0caca; /* Color rojo oscuro al pasar el ratón por encima */
+}
+
+.data-view {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Distribuye el espacio entre el enlace y el botón */
+    padding: 10px;
+    border-bottom: 1px solid #e0e0e0; /* Línea divisoria opcional */
+}
+
+.data-view a {
+    flex: 2; /* Ocupa más espacio que el botón */
+    text-align: left; /* Alinea el texto a la derecha */
+    margin-right: 20px; /* Espacio entre el enlace y el botón */
+}
+
+.data-view button {
+    flex: 1; /* Ocupa menos espacio que el enlace */
+}
+
+.endpoint-container {
+    margin-top: 20px; /* Espacio entre el contenedor anterior y este */
+    padding: 10px;
+    border: 1px solid #e0e0e0; /* Borde opcional */
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+}
+
+.endpoint-view {
+    margin-bottom: 10px; /* Espacio entre los enlaces */
+}
+
+footer {
+    background-color: rgba(50, 50, 50, 0.8);
+    color: #ffffff;
+    font-size: 12px;
+    width: 100%;
+    max-width: 1200px; /* Las mismas dimensiones que el contenedor principal */
+    margin: 10px auto 0 auto; /* Añade margen arriba para separación */
+    padding: 0.5px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.footer-content {
+    text-align: center;
+}
+
+.footer-content a {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* Estilos para pantallas grandes (por ejemplo, computadoras de escritorio) */
+/* No necesitas una consulta de medios para esto, ya que estos serán tus estilos predeterminados */
+
+/* Estilos para tablets */
+@media (max-width: 768px) {
+    .main-container, footer {
+        padding: 10px;
+    }
+    /* Otros ajustes específicos para tablets */
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 480px) {
+    .main-container, footer {
+        padding: 5px;
+    }
+    /* Otros ajustes específicos para móviles */
+}

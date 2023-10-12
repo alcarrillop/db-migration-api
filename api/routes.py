@@ -1,44 +1,56 @@
-from flask import request, jsonify
+from flask import request, jsonify, render_template
 from flask_restful import Resource, Api, reqparse
 from sqlalchemy import text
 from werkzeug.datastructures import FileStorage
 from api import app, db
 from api.models import Department, Job, Employee
 import csv
+import json
 
 api = Api(app)
 
 parser = reqparse.RequestParser()
 parser.add_argument('file', type=FileStorage, location='files')
 
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('index.html')
+
 @app.route('/upload-csv/table-department', methods=['GET'])
 def get_departments():
-    departments = Department.query.all()  # Fetch all departments
+    departments = Department.query.all()
+    if not departments:
+        return jsonify(success=False, message="No data to display")
     return jsonify([dept.serialize() for dept in departments])
 
 @app.route('/upload-csv/table-job', methods=['GET'])
 def get_jobs():
     jobs = Job.query.all()  # Fetch all jobs
+    if not jobs:
+        return jsonify(success=False, message="No data to display")
     return jsonify([job.serialize() for job in jobs])
 
 @app.route('/upload-csv/table-employee', methods=['GET'])
 def get_employees():
     employees = Employee.query.all()  # Fetch all employees
+    if not employees:
+        return jsonify(success=False, message="No data to display")
     return jsonify([emp.serialize() for emp in employees])
 
-@app.route('/upload-csv/table-department', methods=['DELETE'])
+# Deletes files
+@app.route('/upload-csv/table-department/delete', methods=['DELETE'])
 def delete_departments():
     Department.query.delete()  # Delete all departments
     db.session.commit()  # Commit the changes
     return jsonify({"message": "All departments deleted successfully"})
 
-@app.route('/upload-csv/table-job', methods=['DELETE'])
+@app.route('/upload-csv/table-job/delete', methods=['DELETE'])
 def delete_jobs():
     Job.query.delete()  # Delete all jobs
     db.session.commit()  # Commit the changes
     return jsonify({"message": "All jobs deleted successfully"})
 
-@app.route('/upload-csv/table-employee', methods=['DELETE'])
+@app.route('/upload-csv/table-employee/delete', methods=['DELETE'])
 def delete_employees():
     Employee.query.delete()  # Delete all employees
     db.session.commit()  # Commit the changes
@@ -71,7 +83,8 @@ def hires_by_quarter():
 
         result = db.session.execute(sql)
         hires = [{"department": row[0], "job": row[1], "Q1": row[2], "Q2": row[3], "Q3": row[4], "Q4": row[5]} for row in result]
-
+        if not hires:
+            return jsonify(success=False, message="No data to display")
         return jsonify(hires)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -114,7 +127,8 @@ def departments_above_average():
 
         result = db.session.execute(sql)
         departments = [{"id": row[0], "department": row[1], "hired": row[2]} for row in result]
-
+        if not departments:
+            return jsonify(success=False, message="No data to display")
         return jsonify(departments)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -147,7 +161,26 @@ class UploadCSV(Resource):
 
 class BatchInsert(Resource):
     def post(self):
-        data = request.get_json()
+        # Verificar si el archivo fue enviado
+        if 'file' not in request.files:
+            return {"message": "No file provided"}, 400
+
+        file = request.files['file']
+
+        # Verificar si el archivo tiene un nombre
+        if file.filename == '':
+            return {"message": "No file selected"}, 400
+
+        # Verificar si el archivo es de tipo JSON
+        if not file.filename.endswith('.json'):
+            return {"message": "Invalid file type"}, 400
+
+        # Leer el contenido del archivo
+        content = file.read()
+
+        # Convertir el contenido a un objeto Python
+        data = json.loads(content)
+
         if not data:
             return {"message": "No data provided"}, 400
         if not isinstance(data, list) or len(data) > 1000:

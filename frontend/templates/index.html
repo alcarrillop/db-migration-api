@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Migration</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+    <script src="../static/js/script.js" defer></script>
+</head>
+<body>
+    <main>
+        <div class="main-container">
+            <div class="header">
+                <h1>Database Migration</h1>
+                <p>This application allows you to upload CSV and JSON files to insert data into the database. You can also view the uploaded data in different tables. Simply select the file you want to upload and click the corresponding button.</p>
+            </div>
+            <div class="container">
+                <!-- Columna Izquierda: Subir Archivos -->
+                <div class="left-column">
+                    <h2>File Upload</h2>
+            
+                    <!-- Subir CSV -->
+                    <!-- Subir CSV -->
+                    <form id="form-csv" action="/upload-csv" method="post" enctype="multipart/form-data">
+                        <label>Upload CSV:</label>
+                        <input type="file" name="file" accept=".csv">
+                        <button type="button" onclick="enviarDatos(document.getElementById('form-csv'), '/upload-csv')">Send</button>
+                    </form>
+
+                    <!-- Inserción por Lotes (JSON) -->
+                    <form id="form-json" action="/batch-insert" method="post" enctype="multipart/form-data">
+                        <label>Upload JSON:</label>
+                        <input type="file" name="file" accept=".json">
+                        <button type="button" onclick="enviarDatos(document.getElementById('form-json'), '/batch-insert')">Send</button>
+                    </form>
+
+
+                </div>
+            
+                <!-- Columna Derecha: Visualizar Archivos -->
+                <div class="right-column">
+                    <h2>Data Visualization</h2>
+                    <div class="data-view">
+                        <a href="/upload-csv/table-department" target="_blank">View Table: Departments</a>
+                        <button onclick="limpiarTabla('department')">Clear All</button>
+                    </div>
+                    <div class="data-view">
+                        <a href="/upload-csv/table-job" target="_blank">View Table: Jobs</a>
+                        <button onclick="limpiarTabla('job')">Clear All</button>
+                    </div>
+                    <div class="data-view">
+                        <a href="/upload-csv/table-employee" target="_blank">View Table: Employees</a>
+                        <button onclick="limpiarTabla('employee')">Clear All</button>
+                    </div>
+                    <div class="endpoint-container">
+                        <h2>Special Queries</h2>
+                        <div class="endpoint-view">
+                            <a href="/hires-by-quarter" target="_blank">Query hires by quarter</a>
+                        </div>
+                        <div class="endpoint-view">
+                            <a href="/departments-above-average" target="_blank">Query departaments above average</a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>        
+    </main>
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2023 Globant Challenge. All rights reserved.</p>
+            <p>Contact: <a href="mailto:alcarrillop@gmail.com">alcarrillop@gmail.com</a></p>
+        </div>
+    </footer>
+    
+</body>
+</html>
