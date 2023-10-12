@@ -36,17 +36,17 @@ A RESTful API designed to facilitate database migrations. This project provides 
 ### Endpoints for Deleting Data:
 
 1. **Delete All Departments**:
-   - **Endpoint**: `/upload-csv/table-department`
+   - **Endpoint**: `/upload-csv/table-department/delete`
    - **Method**: `DELETE`
    - **Description**: Deletes all records from the departments table.
 
 2. **Delete All Jobs**:
-   - **Endpoint**: `/upload-csv/table-job`
+   - **Endpoint**: `/upload-csv/table-job/delete`
    - **Method**: `DELETE`
    - **Description**: Deletes all records from the jobs table.
 
 3. **Delete All Employees**:
-   - **Endpoint**: `/upload-csv/table-employee`
+   - **Endpoint**: `/upload-csv/table-employee/delete`
    - **Method**: `DELETE`
    - **Description**: Deletes all records from the employees table.
 
